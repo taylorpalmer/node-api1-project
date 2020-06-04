@@ -86,3 +86,7 @@ server.delete("/users/:id", (req, res) => {
     });
   }
 });
+
+server.listen(5000, () => {
+  console.log("server listening on port 5000");
+});
