@@ -15,15 +15,19 @@ server.get("/users/:id", (req, res) => {
 
   if (user) {
     res.json(user);
-  } else {
+  } else if (!user) {
     res.status(404).json({
-      message: "User not found",
+      message: "The user with the specified ID does not exist.",
+    });
+  } else {
+    res.status(500).json({
+      message: "The user information could not be retrieved.",
     });
   }
 });
 
 server.post("/users", (req, res) => {
-  if (!req.body.name) {
+  if (!req.body.name || !req.body.bio) {
     return res.status(400).json({
       message: "Please provide name and bio for the user.",
     });
@@ -31,6 +35,7 @@ server.post("/users", (req, res) => {
 
   const newUser = db.createUser({
     name: req.body.name,
+    bio: req.body.bio,
   });
 
   res.status(201).json(newUser);
